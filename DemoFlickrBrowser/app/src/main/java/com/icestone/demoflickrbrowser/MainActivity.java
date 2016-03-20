@@ -17,8 +17,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        GetRawData theRawData = new GetRawData(FLICKR_API_PUBLIC_PHOTO_URL);
-        theRawData.execute();
+        GetFlickrJsonData flickrJsonData = new GetFlickrJsonData("android", true);
+        flickrJsonData.execute();
+
+//        //Test for getting raw data
+//        GetRawData theRawData = new GetRawData(FLICKR_API_PUBLIC_PHOTO_URL);
+//        theRawData.execute();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
