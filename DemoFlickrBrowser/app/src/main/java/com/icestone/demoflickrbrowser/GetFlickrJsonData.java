@@ -19,7 +19,6 @@ public class GetFlickrJsonData extends GetRawData {
     private List<Photo> mPhotos;
     private Uri mDestinationUri;
 
-    //create a constructor
     public GetFlickrJsonData(String searchCriteria, boolean matchAll) {
         super(null);
         createAndUpdateUri(searchCriteria, matchAll);
@@ -29,11 +28,11 @@ public class GetFlickrJsonData extends GetRawData {
     public void execute() {
         super.setmRawUrl(mDestinationUri.toString());
         DownloadJsonData downloadJsonData = new DownloadJsonData();
-        Log.v(LOG_TAG, "Build URI = " + mDestinationUri.toString());
+        Log.v(LOG_TAG, "Built URI = " + mDestinationUri.toString());
         downloadJsonData.execute(mDestinationUri.toString());
     }
 
-    private boolean createAndUpdateUri(String searchCriteria, boolean matchAll) {
+    public boolean createAndUpdateUri(String searchCriteria, boolean matchAll) {
         final String FLICKR_API_BASE_URL = "https://api.flickr.com/services/feeds/photos_public.gne";
         final String TAGS_PARAM = "tags";
         final String TAGMODE_PARAM = "tagmode";
@@ -50,9 +49,11 @@ public class GetFlickrJsonData extends GetRawData {
         return mDestinationUri != null;
     }
 
+
     public void processResult() {
+
         if (getmDownloadStatus() != DownloadStatus.OK) {
-            Log.e(LOG_TAG, "Error downloading file");
+            Log.e(LOG_TAG, "Error downloading raw file");
             return;
         }
 
@@ -66,9 +67,11 @@ public class GetFlickrJsonData extends GetRawData {
         final String FLICKR_TAGS = "tags";
 
         try {
+
             JSONObject jsonData = new JSONObject(getmData());
             JSONArray itemsArray = jsonData.getJSONArray(FLICKR_ITEMS);
             for (int i = 0; i < itemsArray.length(); i++) {
+
                 JSONObject jsonPhoto = itemsArray.getJSONObject(i);
                 String title = jsonPhoto.getString(FLICKR_TITLE);
                 String author = jsonPhoto.getString(FLICKR_AUTHOR);
@@ -83,7 +86,7 @@ public class GetFlickrJsonData extends GetRawData {
 
                 this.mPhotos.add(photoObject);
             }
-            //test
+
             for (Photo singlePhoto : mPhotos) {
                 Log.v(LOG_TAG, singlePhoto.toString());
             }
@@ -92,18 +95,21 @@ public class GetFlickrJsonData extends GetRawData {
             jsone.printStackTrace();
             Log.e(LOG_TAG, "Error processing Json data");
         }
+
     }
 
     public class DownloadJsonData extends DownloadRawData {
+
         protected void onPostExecute(String webData) {
-            super.execute();
+            super.onPostExecute(webData);
             processResult();
+
         }
 
         protected String doInBackground(String... params) {
-            return super.doInBackground();
+            return super.doInBackground(params);
         }
-    }
 
+    }
 
 }
