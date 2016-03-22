@@ -2,11 +2,20 @@ package com.icestone.demoflickrbrowser;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    private static final String LOG_TAG = MainActivity.class.getSimpleName(); // "MainActivity"
+    private List<Photo> mPhotosList = new ArrayList<Photo>();
+    private RecyclerView mRecyclerView;
+    private FlickrRecyclerViewAdapter flickrRecyclerViewAdapter;
 
     private static String FLICKR_API_PUBLIC_PHOTO_URL = "https://api.flickr.com/services/feeds/photos_public.gne?format=json&nojsoncallback=1";
 
@@ -54,5 +63,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public class ProcessPhoto extends GetFlickrJsonData {
+        public ProcessPhoto(String searchCriteria, boolean matchAll) {
+            super(searchCriteria, matchAll);
+        }
+
+        public void execute(){
+            super.execute();
+            ProcessData processData = new ProcessData();
+            processData.execute();
+        }
+
+        public class processData extends DownloadJsonData {
+            protected void onPostExecute(String webData){
+                super.onPostExecute(webData);
+                flickrRecyclerViewAdapter = new FlickrRecyclerViewAdapter(MainActivity.this, getMPhotos());
+                mRecyclerView.setAdapter(flickrRecyclerViewAdapter);
+            }
+        }
     }
 }
