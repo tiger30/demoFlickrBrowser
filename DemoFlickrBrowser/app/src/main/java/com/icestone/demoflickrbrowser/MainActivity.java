@@ -2,6 +2,7 @@ package com.icestone.demoflickrbrowser;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -26,8 +27,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        GetFlickrJsonData flickrJsonData = new GetFlickrJsonData("android", true);
-        flickrJsonData.execute();
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        ProcessPhoto processPhoto= new ProcessPhoto("witcher3, wildhunt", true);
+        processPhoto.execute();
+
+//        GetFlickrJsonData flickrJsonData = new GetFlickrJsonData("android", true);
+//        flickrJsonData.execute();
 
 //        //Test for getting raw data
 //        GetRawData theRawData = new GetRawData(FLICKR_API_PUBLIC_PHOTO_URL);
@@ -72,14 +79,14 @@ public class MainActivity extends AppCompatActivity {
 
         public void execute(){
             super.execute();
-            ProcessData processData = new ProcessData();
+            processData processData = new processData();
             processData.execute();
         }
 
         public class processData extends DownloadJsonData {
             protected void onPostExecute(String webData){
                 super.onPostExecute(webData);
-                flickrRecyclerViewAdapter = new FlickrRecyclerViewAdapter(MainActivity.this, getMPhotos());
+                flickrRecyclerViewAdapter = new FlickrRecyclerViewAdapter(getMPhotos(), MainActivity.this);
                 mRecyclerView.setAdapter(flickrRecyclerViewAdapter);
             }
         }
