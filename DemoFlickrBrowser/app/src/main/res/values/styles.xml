@@ -17,4 +17,39 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- Flickr application theme -->
+    <style name="FlickrAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+    </style>
+
+    <style name="Theme.Base" parent="FlickrAppTheme">
+        <item name="colorPrimary">@color/flickrPrimaryBackgroundColor</item>
+        <item name="colorPrimaryDark">@color/flickrSecondaryBackgroundColor</item>
+        <item name="colorAccent">@color/flickrColorBackgroundAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/flickrBackgroundColor</item>
+    </style>
+
+    <style name="Theme.Flickr" parent="Theme.Base" />
+
+    <style name="FlickrTheme.AppBarOverlay" parent="Theme.Base">
+        <item name="android:textColorPrimary">@color/flickrPrimaryTextColor</item>
+        <item name="colorControlHighlight">@color/flickrBackgroundColor</item>
+        <item name="android:actionMenuTextColor">@color/flickrPrimaryTextColor</item>
+        <item name="android:textColorSecondary">@color/flickrSecondaryTextColor</item>
+        <item name="android:background">@color/flickrPrimaryBackgroundColor</item>
+    </style>
+
+    <style name="ActionBar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/flickrPrimaryTextColor</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="FlickrTheme.PopupOverlay" parent="Theme.Base"></style>
+
+    <style name="Theme.Flickr.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Flickr.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>
