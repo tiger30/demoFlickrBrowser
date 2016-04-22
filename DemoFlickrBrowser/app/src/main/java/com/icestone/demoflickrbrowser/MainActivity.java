@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -36,6 +37,20 @@ public class MainActivity extends BaseActivity {
 
         flickrRecyclerViewAdapter = new FlickrRecyclerViewAdapter(new ArrayList<Photo>(), MainActivity.this);
         mRecyclerView.setAdapter(flickrRecyclerViewAdapter);
+
+        /*--  --*/
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this,
+                mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(MainActivity.this, "Normal tap", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                Toast.makeText(MainActivity.this, "Long tap", Toast.LENGTH_SHORT).show();
+            }
+        }));
 
 //        /**moved to onResume()**/
 //        ProcessPhotos processPhotos = new ProcessPhotos("witcher3, wildhunt", true);
