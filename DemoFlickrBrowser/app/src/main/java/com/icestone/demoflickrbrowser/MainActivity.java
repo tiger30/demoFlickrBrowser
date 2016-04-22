@@ -34,8 +34,13 @@ public class MainActivity extends BaseActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ProcessPhotos processPhotos = new ProcessPhotos("witcher3, wildhunt", true);
-        processPhotos.execute();
+        flickrRecyclerViewAdapter = new FlickrRecyclerViewAdapter(new ArrayList<Photo>(), MainActivity.this);
+        mRecyclerView.setAdapter(flickrRecyclerViewAdapter);
+
+//        /**moved to onResume()**/
+//        ProcessPhotos processPhotos = new ProcessPhotos("witcher3, wildhunt", true);
+//        processPhotos.execute();
+//        /**------------------**/
 
 //        GetFlickrJsonData flickrJsonData = new GetFlickrJsonData("android", true);
 //        flickrJsonData.execute();
@@ -57,16 +62,17 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (flickrRecyclerViewAdapter != null){
-            String query = getSavePreferenceData(FLICKR_QUERY);
-            if (query.length() > 0){
-                ProcessPhotos processPhotos = new ProcessPhotos(query, true);
-                processPhotos.execute();
-            }
+//        if (flickrRecyclerViewAdapter != null){
+// because onResume always start after onCreate, and flickrRecyclerViewAdapter was moved to onCreate, flickrRecycleViewAdapter always exist.
+        String query = getSavePreferenceData(FLICKR_QUERY);
+        if (query.length() > 0) {
+            ProcessPhotos processPhotos = new ProcessPhotos(query, true);
+            processPhotos.execute();
         }
+//        }
     }
 
-    private String getSavePreferenceData (String key){
+    private String getSavePreferenceData(String key) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         return sharedPref.getString(key, "");
     }
@@ -116,8 +122,9 @@ public class MainActivity extends BaseActivity {
         public class processData extends DownloadJsonData {
             protected void onPostExecute(String webData) {
                 super.onPostExecute(webData);
-                flickrRecyclerViewAdapter = new FlickrRecyclerViewAdapter(getMPhotos(), MainActivity.this);
-                mRecyclerView.setAdapter(flickrRecyclerViewAdapter);
+                flickrRecyclerViewAdapter.loadNewData(getPhotos());
+//                flickrRecyclerViewAdapter = new FlickrRecyclerViewAdapter(getMPhotos(), MainActivity.this);
+//                mRecyclerView.setAdapter(flickrRecyclerViewAdapter);
             }
         }
     }
