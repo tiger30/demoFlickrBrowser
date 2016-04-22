@@ -1,10 +1,14 @@
 package com.icestone.demoflickrbrowser;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +34,8 @@ public class MainActivity extends BaseActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ProcessPhoto processPhoto= new ProcessPhoto("witcher3, wildhunt", true);
-        processPhoto.execute();
+        ProcessPhotos processPhotos = new ProcessPhotos("witcher3, wildhunt", true);
+        processPhotos.execute();
 
 //        GetFlickrJsonData flickrJsonData = new GetFlickrJsonData("android", true);
 //        flickrJsonData.execute();
@@ -51,6 +55,23 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (flickrRecyclerViewAdapter != null){
+            String query = getSavePreferenceData(FLICKR_QUERY);
+            if (query.length() > 0){
+                ProcessPhotos processPhotos = new ProcessPhotos(query, true);
+                processPhotos.execute();
+            }
+        }
+    }
+
+    private String getSavePreferenceData (String key){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return sharedPref.getString(key, "");
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -66,25 +87,34 @@ public class MainActivity extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(MainActivity.this, "setting menu CLICKED", Toast.LENGTH_SHORT).show();
             return true;
         }
+        //search icon
+        if (id == R.id.menu_search) {
+//            Toast.makeText(MainActivity.this, "Search clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
 
-    public class ProcessPhoto extends GetFlickrJsonData {
-        public ProcessPhoto(String searchCriteria, boolean matchAll) {
+    public class ProcessPhotos extends GetFlickrJsonData {
+        public ProcessPhotos(String searchCriteria, boolean matchAll) {
             super(searchCriteria, matchAll);
         }
 
-        public void execute(){
+        public void execute() {
             super.execute();
             processData processData = new processData();
             processData.execute();
         }
 
         public class processData extends DownloadJsonData {
-            protected void onPostExecute(String webData){
+            protected void onPostExecute(String webData) {
                 super.onPostExecute(webData);
                 flickrRecyclerViewAdapter = new FlickrRecyclerViewAdapter(getMPhotos(), MainActivity.this);
                 mRecyclerView.setAdapter(flickrRecyclerViewAdapter);

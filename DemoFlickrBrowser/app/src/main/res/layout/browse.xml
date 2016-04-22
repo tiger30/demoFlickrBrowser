@@ -20,6 +20,7 @@
         android:layout_marginLeft="8dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
+        android:textColor="@color/flickrSecondaryTextColor"
         android:maxLines="3"/>
 
 </LinearLayout>

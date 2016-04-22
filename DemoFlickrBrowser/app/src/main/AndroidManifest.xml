@@ -23,7 +23,8 @@
         <activity
             android:name=".SearchActivity"
             android:label="Search Activity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.Flickr">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />

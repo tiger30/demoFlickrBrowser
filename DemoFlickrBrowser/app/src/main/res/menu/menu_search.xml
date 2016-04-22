@@ -10,7 +10,12 @@
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/search_menu"
         android:orderInCategory="1"
-        flickr:actionViewClass="android.support.v7.widget.SearchView"
-        flickr:showAsAction="always"/>
-
+        flickr:showAsAction="always"
+        flickr:actionViewClass="android.widget.SearchView"/>
+    <!--<item android:id="@+id/search_view"-->
+        <!--android:icon="@android:drawable/ic_menu_search"-->
+        <!--android:title="@string/search_menu"-->
+        <!--android:orderInCategory="1"-->
+        <!--flickr:showAsAction="always"-->
+        <!--flickr:actionViewClass="android.support.v7.widget.SearchView"/>-->
 </menu>
