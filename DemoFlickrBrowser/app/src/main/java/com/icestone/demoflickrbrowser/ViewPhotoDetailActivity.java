@@ -1,5 +1,6 @@
 package com.icestone.demoflickrbrowser;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 public class ViewPhotoDetailActivity extends BaseActivity {
@@ -9,6 +10,10 @@ public class ViewPhotoDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_detail);
         activateToolbarWithHomeEnabled();
+
+        Intent intent = getIntent();
+        Photo photo = (Photo) intent.getSerializableExtra(PHOTO_TRANSFER);
+        
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
